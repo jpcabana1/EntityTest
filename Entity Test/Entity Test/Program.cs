@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection.Metadata;
 using Entity_Test.Models;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
@@ -27,26 +28,35 @@ namespace Entity_Test
         {
             using NorthwindContext context = new NorthwindContext();
 
-           
-            Products product = new Products()
-            {   
-                ProductId = 78,
-                ProductName = "Coca-Cola Alterada",
-                SupplierId = 1,
-                CategoryId = 1,
-                QuantityPerUnit = "10",
-                UnitPrice = 5,
-                UnitsInStock = 200,
-                UnitsOnOrder = 3,
-                ReorderLevel = 0,
-                Discontinued = false
-            };
+
+            //Products product = new Products()
+            //{   
+
+            //    ProductName = "Coca-Cola Alterada",
+            //    SupplierId = 1,
+            //    CategoryId = 1,
+            //    QuantityPerUnit = "10",
+            //    UnitPrice = 5,
+            //    UnitsInStock = 200,
+            //    UnitsOnOrder = 3,
+            //    ReorderLevel = 0,
+            //    Discontinued = false
+            //};
 
             //context.Add(product);
-            context.Update(product);
+            //context.Update(product);
             //context.Remove(product);
 
-            context.SaveChanges();
+            //context.SaveChanges();
+
+            var products = context.Products
+                .Where(p => p.ProductId == 78 && p.SupplierId == 1)
+                .OrderBy(p => p.ProductId);
+
+            foreach (Products p  in products)
+            {
+                Console.WriteLine($"Id: {p.ProductId}");
+            }
 
             Console.WriteLine("All stuff saved into the database");
             Console.ReadLine();
